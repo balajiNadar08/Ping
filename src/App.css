@@ -1,0 +1,88 @@
+.preloader {
+  background-color: #182848;
+  color: #fff;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+}
+
+
+.animated-gradient-bg {
+  animation: animateBg 2s linear infinite;
+  background-image: linear-gradient(0deg, #4b6cb7, #182848, #4b6cb7, #182848);
+  background-size: 100% 300%;
+}
+
+@keyframes animateBg {
+  0% {
+    background-position: 0% 100%;
+  }
+
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.container {
+  padding: 1.5rem 2.5rem;
+  position: relative;
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.display {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  text-align: left;
+  color: #F5EEDD;
+}
+.display p {
+  margin: 0.7rem 0;
+}
+
+button {
+  padding: 0.3rem 1.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.1rem;
+  border: none;
+  border-radius: 1.8rem;
+  margin-bottom: 3rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+
+footer {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  display: flex;
+}
+footer p {
+  font-size: 1rem;
+  padding-right: 0.2rem;
+  color: #fff;
+}
+footer ul {
+  display: flex;
+  list-style: none;
+}
+footer ul li {
+  display: flex;
+  gap: 0.1rem;
+}
+footer ul li p {
+  color: #fff;
+}
+footer ul li a {
+  margin: 0 0.1rem;
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.2rem;
+}
