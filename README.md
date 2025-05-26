@@ -1,4 +1,4 @@
-# React + Vite
+# Ping - A chrome extension to test internet speed 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
