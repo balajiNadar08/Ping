@@ -6,9 +6,7 @@
     "default_popup": "index.html"
   },
   "permissions": [
-    "scripting",
-    "https://upload.wikimedia.org/*",
-    "storage" 
+    "https://upload.wikimedia.org/*"
   ],
   "host_permissions": [
     "http://*/*",
