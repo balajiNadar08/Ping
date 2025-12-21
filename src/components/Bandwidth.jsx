@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "../App.css";
 import NumberFlow from "@number-flow/react";
-import Footer from "./Footer.jsx";
 
 const Bandwidth = () => {
   const [duration, setDuration] = useState(null);
@@ -12,41 +11,69 @@ const Bandwidth = () => {
   const [isRunning, setIsRunning] = useState(false);
   const isRunningRef = useRef(true);
 
-  async function test() {
-    const URL =
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Black_hole_optics.png/1200px-Black_hole_optics.png?rand=" +
-      Math.random();
-    const downloadSize = 1355000;
+  const TEST_RUNS = 5;
+  const TEST_DELAY_MS = 500;
 
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  function runSingleTest() {
+    return new Promise((resolve, reject) => {
+      const URL =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Black_hole_optics.png/1200px-Black_hole_optics.png?cache=" +
+        Math.random();
+
+      const downloadSize = 1355000; // bytes (approx)
+
+      const start = performance.now();
+      const img = new Image();
+
+      img.onload = () => {
+        const end = performance.now();
+        const duration = (end - start) / 1000;
+        const speed = (downloadSize * 8) / duration / (1024 * 1024);
+
+        resolve({ speed, duration });
+      };
+
+      img.onerror = () => reject("Image failed to load");
+
+      img.src = URL;
+    });
+  }
+
+  async function test() {
     setIsTesting(true);
     setError(null);
 
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    const speeds = [];
+    const durations = [];
 
-    const start = performance.now();
+    try {
+      for (let i = 0; i < TEST_RUNS && isRunningRef.current; i++) {
+        const { speed, duration } = await runSingleTest();
 
-    let download = new Image();
-    download.src = URL;
+        speeds.push(speed);
+        durations.push(duration);
 
-    download.onload = function () {
-      const end = performance.now();
-      const timeDuration = (end - start) / 1000;
-      const speed = (downloadSize * 8) / timeDuration / (1024 * 1024);
+        // Optional: show latest run live
+        setSpeedInMbps(speed.toFixed(2));
+        setDuration(duration.toFixed(2));
 
-      setDuration(timeDuration);
-      setSpeedInMbps(speed.toFixed(2));
+        await sleep(TEST_DELAY_MS);
+      }
+
+      if (!isRunningRef.current) return;
+
+      const avgSpeed = speeds.reduce((a, b) => a + b, 0) / speeds.length;
+
+      const totalDuration = durations.reduce((a, b) => a + b, 0);
+
+      setSpeedInMbps(avgSpeed.toFixed(2));
+      setDuration(totalDuration.toFixed(2));
+    } catch (err) {
+      setError(err);
+    } finally {
       setIsTesting(false);
-    };
-
-    await sleep(3000);
-
-    download.onerror = function () {
-      setError("Failed to load test image");
-      setIsTesting(false);
-    };
-
-    if (isRunningRef.current) {
-      test();
     }
   }
 
@@ -65,21 +92,25 @@ const Bandwidth = () => {
   return (
     <div className="container">
       <div className="display">
-        <p>
-          Speed: <NumberFlow className="speed" value={speedInMbps} /> Mbps
+        <p className="label">Speed</p>
+        <p className="value speed">
+          <NumberFlow value={speedInMbps} /> <span className="unit">Mb/s</span>
         </p>
-        <p>
-          Duration: <NumberFlow className="duration" value={duration} />s
+
+        <p className="label subtle">Data Transfer Time</p>
+        <p className="value duration">
+          <NumberFlow value={duration} /> <span className="unit">s</span>
         </p>
       </div>
 
-      <button onClick={() => setIsRunning(!isRunning)}>
+      <button
+        className={isRunning ? "running" : ""}
+        onClick={() => setIsRunning(!isRunning)}
+      >
         {!isRunning ? "Test" : "Stop"}
       </button>
 
       {error ? <p>{error}</p> : null}
-
-      <Footer />
     </div>
   );
 };
