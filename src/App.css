@@ -59,21 +59,31 @@
   margin-left: 0.2rem;
 }
 
+.tech-meta {
+  margin: 1.2rem 0;
+  font-size: 0.7rem;
+  opacity: 0.6;
+  letter-spacing: 0.06rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
 button {
   padding: 0.4rem 1.6rem;
   font-size: 1.1rem;
   letter-spacing: 0.15rem;
+  border: none;
   border-radius: 2rem;
   background: #f5eedd;
   color: #182848;
   font-weight: 600;
   cursor: pointer;
+  border: 2px solid #f5eedd;
 }
 
 button.running {
   background: transparent;
   color: #f5eedd;
-  border: 2px solid #f5eedd;
 }
 
 button:hover {
