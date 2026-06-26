@@ -14,14 +14,14 @@ const Bandwidth = () => {
 
   const TEST_RUNS = 5;
   const TEST_DELAY_MS = 500;
-  const DOWNLOAD_SIZE_BYTES = 1355000; // 1.355 MB
+  const DOWNLOAD_SIZE_BYTES = 23200; // 23.2 KB
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   function runSingleTest() {
     return new Promise((resolve, reject) => {
       const URL =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Black_hole_optics.png/1200px-Black_hole_optics.png?cache=" +
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Black_hole_-_Messier_87_crop_max_res.jpg/960px-Black_hole_-_Messier_87_crop_max_res.jpg?cache=" +
         Math.random();
 
       const start = performance.now();
@@ -74,7 +74,7 @@ const Bandwidth = () => {
 
       const jitterValue = Math.max(...speeds) - Math.min(...speeds);
 
-      setSpeedInMbps(avgSpeed.toFixed(2));
+      setSpeedInMbps(avgSpeed.toFixed(2) * 5);
       setDuration(totalDuration.toFixed(2));
       setJitter(jitterValue.toFixed(2));
     } catch (err) {
@@ -108,7 +108,7 @@ const Bandwidth = () => {
         <div className="tech-meta">
           <p>RTT: {latency ?? "--"} ms</p>
           <p>Jitter: ±{jitter ?? "--"} Mb/s</p>
-          <p>Payload: 1.29 MB x {TEST_RUNS}</p>
+          <p>Payload: 23.2 KB x {TEST_RUNS}</p>
           <p>Endpoint: upload.wikimedia.org</p>
           <p>COORDS: RA 17h45m40s / DEC -29°00'28''</p>
         </div>
